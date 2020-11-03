@@ -1,32 +1,40 @@
-import React from "react";
-import { Link} from 'react-router-dom'
+import React, { useEffect } from "react";
+import { Link } from 'react-router-dom'
+// actions
+import {NEXT_PAGE,PREV_PAGE } from '../actions'
 
-const Pagination = () => {
+const Pagination = ({ currPage, nextPage, prevPage, setPage, fetching, state, mode }) => {
+  const pageItemDarkMode = document.querySelectorAll('.page-link');
+  useEffect(() => {
+    mode ? pageItemDarkMode.forEach(el => el.classList.remove('darker-mode-link')) : pageItemDarkMode.forEach(el => el.classList.add('darker-mode-link'));
+  })
   return (
     <nav aria-label="Page navigation example" className="d-flex justify-content-center">
       <ul className="pagination">
         <li className="page-item">
-          <Link className="page-link" to="#">
+          <Link className="page-link" to="#"
+           onClick={() => setPage({type: PREV_PAGE, fetching, state})}
+          >
             Previous
           </Link>
         </li>
         <li className="page-item">
           <Link className="page-link" to="#">
-            1
+            {prevPage}
           </Link>
         </li>
         <li className="page-item">
           <Link className="page-link" to="#">
-            2
+            {currPage}
           </Link>
         </li>
         <li className="page-item">
           <Link className="page-link" to="#">
-            3
+            {nextPage}
           </Link>
         </li>
         <li className="page-item">
-          <Link className="page-link" to="#">
+          <Link className="page-link" to="#" onClick={() => setPage({type: NEXT_PAGE, fetching, state})}>
             Next
           </Link>
         </li>

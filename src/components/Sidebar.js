@@ -1,40 +1,43 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import "../sidebar.css";
 
-const Sidebar = () => {
+const TagLi = ({ to, mode }) => {
+  const liDarkMode = useRef(null);
+  useEffect(() => {
+    mode
+      ? liDarkMode.current.classList.remove("darker-mode-link")
+      : liDarkMode.current.classList.add("darker-mode-link", "rounded", "my-1");
+  });
+  return (
+    <Link
+      id="sidebar-li"
+      className="list-group-item list-group-item-action"
+      to={`/tags/${to}`}
+      ref={liDarkMode}
+    >
+      {to}
+    </Link>
+  );
+};
+
+const Sidebar = ({ tags, mode }) => {
   return (
     <div className="d-none d-md-block">
       <h6>Tags</h6>
       <ul className="list-group list-group-flush">
-        <li id="sidebar-li" className="list-group-item">
-          <Link className="list-group-item-action" to="#">
-            Linux
-          </Link>
-        </li>
-        <li id="sidebar-li" className="list-group-item">
-          <Link className="list-group-item-action" to="#">
-            Ubuntu
-          </Link>
-        </li>
-        <li id="sidebar-li" className="list-group-item">
-          <Link className="list-group-item-action" to="#">
-            Node js
-          </Link>
-        </li>
-        <li id="sidebar-li" className="list-group-item">
-          <Link className="list-group-item-action" to="#">
-            Laravel
-          </Link>
-        </li>
-        <li id="sidebar-li" className="list-group-item">
-          <Link className="list-group-item-action" to="#">
-            Java
-          </Link>
-        </li>
+        {tags.map((tag) => (
+          <TagLi key={`bugs-${tag.name}`} to={tag.name} mode={mode} />
+        ))}
       </ul>
     </div>
   );
+};
+
+Sidebar.propTypes = {
+  tags: PropTypes.array,
+  mode: PropTypes.bool,
 };
 
 export default Sidebar;

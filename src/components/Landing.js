@@ -1,9 +1,13 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
-const Intro = () => {
+const Landing = ({ mode }) => {
+  const landingDarkMode = useRef(null);
+  useEffect(() => {
+    mode ? landingDarkMode.current.classList.remove("darker-mode") : landingDarkMode.current.classList.add("darker-mode");
+   })
   return (
-    <div className="jumbotron jumbotron-fluid">
+    <div className="jumbotron jumbotron-fluid" ref={landingDarkMode}>
       <div className="container">
         <h1 className="display-4 text-center">
           FOR THE LOVE <br /> OF <br /> DEBUGGING
@@ -13,11 +17,13 @@ const Intro = () => {
           can save that energy to build amazing things.
         </p>
         <div className="d-flex justify-content-around">
-          <Link to="/bugs" className="btn btn-primary btn-lg" role="button">SEARCH FIX</Link>
-        </div> 
+          <Link to="/bugs" className="btn btn-primary btn-lg" role="button">
+            SEARCH FIX
+          </Link>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Intro;
+export default Landing;

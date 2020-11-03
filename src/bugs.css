@@ -1,5 +1,43 @@
-#bugs:hover{
-    /* border: 1px solid #17a2b8 !important; */
-    border-radius: 0.25rem !important;
-    background-color: #e0ecee;
+#bug:hover {
+  /* border: 1px solid #17a2b8 !important; */
+  border-radius: 0.25rem !important;
+  background-color: #e0ecee;
 }
+.about {
+  font-family: Montserrat-Regular;
+  word-spacing: 0.05em;
+}
+
+@font-face {
+  font-family: Raleway-Regular;
+  src: url(./fonts/Raleway-Regular.ttf);
+}
+@font-face {
+  font-family: Montserrat-Regular;
+  src: url(./fonts/Montserrat-Regular.ttf);
+}
+
+.footer {
+  font-family: Montserrat-Regular;
+}
+
+.about {
+  font-family: Montserrat-Regular;
+  word-spacing: 0.05em;
+}
+
+.dark-mode {
+  background-color: #3e3e3e;
+  color: #fff;
+}
+
+.darker-mode {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+.darker-mode-link {
+  background-color: #1e1e1e;
+  color: #007bff;
+}
+

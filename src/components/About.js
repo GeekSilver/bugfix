@@ -1,8 +1,9 @@
 import React from "react";
+import '../bugs.css'
 
 const About = () => {
   return (
-    <div className="col-md-6 mx-auto mt-md-5">
+    <div className="col-md-6 mx-auto mt-md-5 about">
       <h2 className="text-center" id="text-muted">
         Genesis
       </h2>

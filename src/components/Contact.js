@@ -14,12 +14,12 @@ const Contact = () => {
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label htmlFor="name" className="form-label">
-                      Your firstname *
+                      Your first name *
                     </label>
                     <input
                       name="name"
                       id="name"
-                      placeholder="Enter your firstname"
+                      placeholder="Enter your first name"
                       required=""
                       type="text"
                       className="form-control"
@@ -29,12 +29,12 @@ const Contact = () => {
                 <div className="col-sm-6">
                   <div className="form-group">
                     <label htmlFor="surname" className="form-label">
-                      Your firstname *
+                      Your last name *
                     </label>
                     <input
                       name="surname"
                       id="surname"
-                      placeholder="Enter your lasttname"
+                      placeholder="Enter your last name"
                       required=""
                       type="text"
                       className="form-control"
@@ -106,16 +106,6 @@ const Contact = () => {
                 <li className="list-inline-item">
                   <Link to="#" target="_blank">
                     <FontAwesomeIcon icon={["fab", "instagram"]} />
-                  </Link>
-                </li>
-                <li className="list-inline-item">
-                  <Link to="#" target="_blank">
-                    <FontAwesomeIcon icon={["fab", "pinterest"]} />
-                  </Link>
-                </li>
-                <li className="list-inline-item">
-                  <Link to="#" target="_blank">
-                    <FontAwesomeIcon icon={["fab", "vimeo"]} />
                   </Link>
                 </li>
               </ul>
