@@ -10,6 +10,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
 import About from "./components/About";
+import Bug from "./components/Bug";
 import Bugs from "./components/Bugs";
 import Tags from "./components/Tags";
 import Contact from "./components/Contact";
@@ -46,6 +47,11 @@ function App() {
         <Route path="/about">
           <Layout mode={mode} setMode={setMode}>
             <About />
+          </Layout>
+        </Route>
+        <Route path="/bugs/:bugException">
+          <Layout mode={mode} setMode={setMode}>
+            <Bug />
           </Layout>
         </Route>
         <Route path="/bugs">
