@@ -19,7 +19,8 @@ const Bug = ({ mode }) => {
   const { bugException } = useParams();
   // fetch bug
   let bug;
-  bug = bugs.find((bugg) => bugg.exception == bugException);
+  bug = bugs.find((bugg) => bugg.exception === bugException);
+  
 
   useEffect(() => {
     mode

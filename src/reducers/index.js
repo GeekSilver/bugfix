@@ -1,4 +1,4 @@
-import bugs from "../container/bugs";
+// import bugs from "../container/bugs";
 
 const bugsReducer = (state, action) => {
   switch (action.type) {
@@ -6,7 +6,6 @@ const bugsReducer = (state, action) => {
       return { ...state, fetching: action.fetching };
 
     case "STACK_BUGS":
-      console.log(`stack bugs length: ${state.bugs.length}`);
       return state;
 
     default:
@@ -14,10 +13,7 @@ const bugsReducer = (state, action) => {
   }
 };
 
-const fetchFeed = (limit, offset, fetching, oldBugs) => {
-  console.log(
-    `vars are: limit ${limit} , offset: ${offset} fetching: ${fetching} oldBugs: ${oldBugs}`
-  );
+const fetchFeed = (limit, offset, fetching, oldBugs, bugs) => {
   if (fetching) {
     return oldBugs;
   }
@@ -34,20 +30,13 @@ const fetchFeed = (limit, offset, fetching, oldBugs) => {
   unViewedBugs = bugs.length - limit * offset; // offset is nextPage - 1
 
   if (unViewedBugs > 0) {
-    nextPageStartIndex =  limit * offset ;
+    nextPageStartIndex = limit * offset;
     nextPageEndIndex =
       unViewedBugs >= limit ? nextPageStartIndex + limit : bugs.length;
-    console.log(
-      `func vars, bugsLength: ${bugs.length} unviewedBugs: ${unViewedBugs} nextPageStartIndex: ${nextPageStartIndex} nextPageEndIndex: ${nextPageEndIndex}`
-    );
 
     currPage = offset + 1;
     nextPage = unViewedBugs > limit ? currPage + 1 : null;
     prevPage = offset === 0 ? null : offset;
-
-    console.log(
-      `-> currPage: ${currPage} nextpage: ${nextPage} prevPage: ${prevPage}`
-    );
 
     return bugsReducer(
       {
@@ -69,29 +58,43 @@ const fetchFeed = (limit, offset, fetching, oldBugs) => {
 const nextPrevPageReducer = (state, action) => {
   switch (action.type) {
     case "NEXT_PAGE":
-      if (action.state.limit * action.state.currPage >= bugs.length) {
+      if (
+        action.state.limit * action.state.currPage >=
+        action.allRecords.length
+      ) {
         return state;
       }
-      console.log("NEXT PAGE ");
       return fetchFeed(
         action.state.limit,
         action.state.currPage,
         action.fetching,
-        action.state
+        action.state,
+        action.allRecords
       );
 
     case "PREV_PAGE":
-     
       if (action.state.currPage > 1) {
         return fetchFeed(
           action.state.limit,
           action.state.currPage - 2,
           action.fetching,
-          action.state
+          action.state,
+          action.allRecords
         );
       }
-      console.log("prev page");
       return state;
+
+    case "NEW_TYPE_OF_RECORDS":
+      console.log("hit default endpoint to update state");
+
+      // return {...action.state, allRecords: action.allRecords, fetching: false}
+      return fetchFeed(
+        action.state.limit,
+        action.state.offset,
+        action.fetching,
+        action.state,
+        action.allRecords
+      );
 
     default:
       return state;

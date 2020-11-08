@@ -19,6 +19,7 @@ import tags from "./container/tags";
 import bugs from "./container/bugs";
 // reducers
 import nextPrevPageReducer from "./reducers";
+import Tag from "./components/Tag";
 
 function App() {
   // autoloading all font awesome brand icons
@@ -31,6 +32,7 @@ function App() {
     prevPage: null,
     bugs: bugs.slice(0, 2),
     fetching: false,
+    allRecords: bugs
   });
 
   // true is light mode and false is dark mode
@@ -66,8 +68,14 @@ function App() {
               }}
               setPage={setState}
               fetching={state.fetching}
+              allRecords={bugs}
               state={state}
             />
+          </Layout>
+        </Route>
+        <Route path="/tags/:tagName">
+          <Layout mode={mode} setMode={setMode}>
+            <Tag />
           </Layout>
         </Route>
         <Route path="/tags">

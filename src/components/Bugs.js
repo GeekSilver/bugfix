@@ -41,11 +41,12 @@ const Bug = ({ bug, mode }) => {
   );
 };
 
-const BugsList = ({ bugs, mode }) => {
+export const BugsList = ({ bugs, mode }) => {
   return bugs.map((bug) => <Bug key={bug.exception} bug={bug} mode={mode} />);
 };
 
-const Bugs = ({ bugs, tags, pages, setPage, fetching, state, mode }) => {
+
+const Bugs = ({ bugs, tags, pages, setPage, fetching, state, allRecords, mode }) => {
   return (
     <div className="row mt-2">
       <div className="col-md-2 offset-md-1">
@@ -63,10 +64,12 @@ const Bugs = ({ bugs, tags, pages, setPage, fetching, state, mode }) => {
           fetching={fetching}
           state={state}
           mode={mode}
+          allRecords={allRecords}
         />
       </div>
     </div>
   );
 };
+
 
 export default Bugs;
