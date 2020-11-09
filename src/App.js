@@ -20,6 +20,9 @@ import bugs from "./container/bugs";
 // reducers
 import nextPrevPageReducer from "./reducers";
 import Tag from "./components/Tag";
+// cookies logic
+import { LIGHT_MODE } from "./cookies";
+import { checkCookie, getCookie } from "./cookieLogic";
 
 function App() {
   // autoloading all font awesome brand icons
@@ -35,8 +38,10 @@ function App() {
     allRecords: bugs
   });
 
-  // true is light mode and false is dark mode
-  const [mode, setMode] = useState(true);
+  let modeValue;
+  // check if darkMode cookie exists in cookie
+  modeValue = checkCookie(LIGHT_MODE) ? getCookie(LIGHT_MODE) === "true" : true;
+  const [mode, setMode] = useState(modeValue);
 
   return (
     <Router>

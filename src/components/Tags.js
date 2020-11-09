@@ -48,6 +48,7 @@ const Tags = ({ tags, mode }) => {
             tag={tag.name}
             about={tag.description}
             mode={mode}
+            key={tag.name}
           />
         ))}
       </div>

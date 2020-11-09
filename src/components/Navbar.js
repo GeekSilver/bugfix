@@ -2,6 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { Link, useRouteMatch } from "react-router-dom";
+// coookies logic
+import { LIGHT_MODE } from "../cookies";
+
+import { setCookie } from "../cookieLogic";
 
 const Li = ({ to, name }) => {
   const match = useRouteMatch();
@@ -31,12 +35,19 @@ const Navbar = ({ mode, setMode }) => {
       : navDarkMode.current.classList.replace("navbar-light", "navbar-dark") &&
         navDarkMode.current.classList.replace("bg-light", "bg-light");
   });
+
+  const setCookieAndSetMode = (mode) => {
+    // set cookie
+    setCookie(LIGHT_MODE, mode, 365, "/");
+    // update mode
+    setMode(mode);
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-light" ref={navDarkMode}>
       <Link className="navbar-brand" to="/">
         BugFix
       </Link>
-      <div id="mode-toggle" className="btn" onClick={() => setMode(!mode)}>
+      <div id="mode-toggle" className="btn" onClick={() => setCookieAndSetMode(!mode)}>
         {mode ? (
           <FontAwesomeIcon icon={faMoon} style={{ color: "yellow" }} />
         ) : (

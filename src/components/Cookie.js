@@ -1,8 +1,10 @@
 import React from "react";
-
 import { Link } from "react-router-dom";
 
-const Cookie = () => {
+// cookies logic
+import { setCookie } from "../cookieLogic";
+
+const Cookie = ({ name, value, expiryDays, path }) => {
   return (
     <div className="fixed-bottom mx-2">
       <div
@@ -21,6 +23,7 @@ const Cookie = () => {
           data-dismiss="alert"
           aria-label="Accept use of Cookies"
           className="btn btn-success"
+          onClick={() => setCookie(name, value, expiryDays)}
         >
           Accept & Close
         </button>

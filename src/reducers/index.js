@@ -85,7 +85,6 @@ const nextPrevPageReducer = (state, action) => {
       return state;
 
     case "NEW_TYPE_OF_RECORDS":
-      console.log("hit default endpoint to update state");
 
       // return {...action.state, allRecords: action.allRecords, fetching: false}
       return fetchFeed(

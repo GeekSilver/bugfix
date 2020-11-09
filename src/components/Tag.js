@@ -34,7 +34,7 @@ const Tag = ({ mode }) => {
     mode
       ? darkTag.current.classList.remove("darker-mode")
       : darkTag.current.classList.add("darker-mode");
-  },[mode]);
+  }, [mode]);
 
   useEffect(() => {
     // query db for bugs in a particular tag
@@ -67,7 +67,7 @@ const Tag = ({ mode }) => {
           {typeof icon == "string" ? (
             <i
               className={`${icon} text-center`}
-              style={{ fontSize: "5em" }}
+              style={{ fontSize: "5em", display: "block", margin: "auto"  }}
             ></i>
           ) : (
             <FontAwesomeIcon
@@ -87,10 +87,7 @@ const Tag = ({ mode }) => {
           </p>
         </div>
         <div>
-          <BugsList
-            bugs={state.bugs}
-            mode={mode}
-          />
+          <BugsList bugs={state.bugs} mode={mode} />
           <Pagination
             currPage={pages.currPage}
             prevPage={pages.prevPage}
