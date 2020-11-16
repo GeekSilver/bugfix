@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // styles
@@ -15,8 +15,8 @@ import Bugs from "./components/Bugs";
 import Tags from "./components/Tags";
 import Contact from "./components/Contact";
 // containers
-import tags from "./container/tags";
-import bugs from "./container/bugs";
+// import tags from "./container/tags";
+// import bugs from "./container/bugs";
 // reducers
 import nextPrevPageReducer from "./reducers";
 import Tag from "./components/Tag";
@@ -27,6 +27,11 @@ import { checkCookie, getCookie } from "./cookieLogic";
 function App() {
   // autoloading all font awesome brand icons
   library.add(fab);
+  // bugs and tags
+  const [bugs, setBugs] = useState([]);
+  const [tags, setTags] = useState([]);
+
+  let [isLoading, setIsLoading] = useState(false);
 
   const [state, setState] = useReducer(nextPrevPageReducer, {
     limit: 2,
@@ -35,8 +40,46 @@ function App() {
     prevPage: null,
     bugs: bugs.slice(0, 2),
     fetching: false,
-    allRecords: bugs
+    allRecords: bugs,
   });
+
+  useEffect(() => {
+    const fetchData = async (url, options) => {
+      setIsLoading(true);
+      try {
+        // fetch bugs
+        const bugsRes = await fetch("http://localhost:1337/bugs", {});
+        const bugsJson = await bugsRes.json();
+
+        setState({
+          type: "NEXT_PAGE",
+          state: {
+            limit: 2,
+            currPage: 0,
+            nextPage: 1,
+            prevPage: null,
+            bugs: bugsJson.slice(0, 2),
+            fetching: false,
+            allRecords: bugsJson,
+          },
+          fetching: false,
+          allRecords: bugsJson,
+        });
+        setBugs(bugsJson);
+        // fetch tags
+        const tagsRes = await fetch("http://localhost:1337/tags", {});
+        const tagsJson = await tagsRes.json();
+        setTags(tagsJson);
+        // toggle isLoading to false
+        setIsLoading(false);
+        return bugsJson; // return bugs : this is for use is setState
+      } catch (error) {
+        setIsLoading(false);
+        return { error };
+      }
+    };
+    fetchData();
+  }, []);
 
   let modeValue;
   // check if darkMode cookie exists in cookie
@@ -47,49 +90,53 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
-          <Layout mode={mode} setMode={setMode}>      
+          <Layout tags={tags} mode={mode} setMode={setMode}>
             <Landing />
           </Layout>
         </Route>
         <Route path="/about">
-          <Layout mode={mode} setMode={setMode}>
+          <Layout tags={tags} mode={mode} setMode={setMode}>
             <About />
           </Layout>
         </Route>
         <Route path="/bugs/:bugException">
-          <Layout mode={mode} setMode={setMode}>
-            <Bug />
+          <Layout tags={tags} mode={mode} setMode={setMode}>
+            <Bug bugs={state.bugs} />
           </Layout>
         </Route>
         <Route path="/bugs">
-          <Layout mode={mode} setMode={setMode}>
-            <Bugs
-              bugs={state.bugs}
-              tags={tags}
-              pages={{
-                currPage: state.currPage,
-                nextPage: state.nextPage,
-                prevPage: state.prevPage,
-              }}
-              setPage={setState}
-              fetching={state.fetching}
-              allRecords={bugs}
-              state={state}
-            />
+          <Layout tags={tags} mode={mode} setMode={setMode}>
+            {isLoading ? (
+              <div className="alert">Fetchinglo bugs</div>
+            ) : (
+              <Bugs
+                bugs={state.bugs}
+                tags={tags}
+                pages={{
+                  currPage: state.currPage,
+                  nextPage: state.nextPage,
+                  prevPage: state.prevPage,
+                }}
+                setPage={setState}
+                fetching={state.fetching}
+                allRecords={bugs}
+                state={state}
+              />
+            )}
           </Layout>
         </Route>
         <Route path="/tags/:tagName">
-          <Layout mode={mode} setMode={setMode}>
-            <Tag />
+          <Layout tags={tags} mode={mode} setMode={setMode}>
+             <Tag tags={tags} />
           </Layout>
         </Route>
         <Route path="/tags">
-          <Layout mode={mode} setMode={setMode}>
-            <Tags tags={tags} />
+          <Layout tags={tags} mode={mode} setMode={setMode}>
+            {isLoading ? <div> Loading tags ... </div> : <Tags tags={tags} />}
           </Layout>
         </Route>
         <Route path="/contact">
-          <Layout mode={mode} setMode={setMode}>
+          <Layout tags={tags} mode={mode} setMode={setMode}>
             <Contact />
           </Layout>
         </Route>

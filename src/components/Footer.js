@@ -48,7 +48,7 @@ const TagLi = ({ tag }) => (
 
 const TagsUl = ({ tags }) => tags.map((tag) => <TagLi key={tag.name} tag={tag} />);
 
-const Footer = () => {
+const Footer = ({ tags }) => {
   return (
     <div className="container-fluid mt-md-5 footer" >
       <div className="row" >

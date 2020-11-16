@@ -1,22 +1,29 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../font-mfizz-2.4.1/font-mfizz.css";
 import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
-import tags from "../container/tags";
-import bugsDB from "../container/bugs";
+// // import tags from "../container/tags";
+// import bugsDB from "../container/bugs";
 import { BugsList } from "./Bugs";
 import nextPrevPageReducer from "../reducers/index";
 import Pagination from "./Pagination";
 
 const Tag = ({ mode }) => {
   const darkTag = useRef(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+  // bugs and tags
+  const [bugs, setBugs] = useState([]);
+  const [tag, setTag] = useState({});
+
   const { tagName } = useParams();
-  let tag = tags.find((bug) => bug.name === tagName);
+  // let tag = tags.find((tagg) => tagg.name === tagName);
   const { fab, name, description } = tag;
+
   const icon = tag.fab ? [name] : `icon-${name}`;
   // query db for bugs in a particular tag
-  let bugs = bugsDB.filter((bug) => bug.tags.includes(tagName));
+  // let bugs = tag.bugs;
 
   // state (containing pages object)
   const [state, setState] = useReducer(nextPrevPageReducer, {
@@ -34,25 +41,39 @@ const Tag = ({ mode }) => {
     mode
       ? darkTag.current.classList.remove("darker-mode")
       : darkTag.current.classList.add("darker-mode");
-  }, [mode]);
+  });
 
   useEffect(() => {
-    // query db for bugs in a particular tag
-    bugs = bugsDB.filter((bug) => bug.tags.includes(tagName));
-    // set state if
-    setState({
-      type: "NEW_TYPE_OF_RECORDS",
-      fetching: false,
-      allRecords: bugs,
-      state: {
-        limit: 2,
-        currPage: 1,
-        nextPage: 2,
-        prevPage: null,
-        bugs: bugs.slice(0, 2),
-      },
-    });
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const tagsRes = await fetch("http://localhost:1337/tags", {});
+        const tagsJson = await tagsRes.json();
+        const currentTag = tagsJson.find((tagg) => tagg.name === tagName);
+        setTag(currentTag);
+        // set state if
+        setState({
+          type: "NEW_TYPE_OF_RECORDS",
+          fetching: false,
+          allRecords: bugs,
+          state: {
+            limit: 2,
+            currPage: 1,
+            nextPage: 2,
+            prevPage: null,
+            bugs: currentTag.bugs.slice(0, 2),
+          },
+        });
+        setBugs(currentTag.bugs);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        return { error };
+      }
+    };
+    fetchData();
   }, [tagName]);
+
 
   let pages = {
     currPage: state.currPage,
@@ -67,7 +88,7 @@ const Tag = ({ mode }) => {
           {typeof icon == "string" ? (
             <i
               className={`${icon} text-center`}
-              style={{ fontSize: "5em", display: "block", margin: "auto"  }}
+              style={{ fontSize: "5em", display: "block", margin: "auto" }}
             ></i>
           ) : (
             <FontAwesomeIcon
@@ -87,7 +108,7 @@ const Tag = ({ mode }) => {
           </p>
         </div>
         <div>
-          <BugsList bugs={state.bugs} mode={mode} />
+          {isLoading ? <div> Loading...</div>:<BugsList bugs={state.bugs} mode={mode} />}
           <Pagination
             currPage={pages.currPage}
             prevPage={pages.prevPage}

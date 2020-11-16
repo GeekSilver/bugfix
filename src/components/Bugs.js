@@ -23,19 +23,20 @@ const Bug = ({ bug, mode }) => {
   });
 
   return (
-    <div
-      id="bug"
-      className="container-sm my-2 pt-2 rounded "
-      ref={bugDarkMode}
-    >
+    <div id="bug" className="container-sm my-2 pt-2 rounded " ref={bugDarkMode}>
       <div className="">
         <Link to={`/bugs/${bug.exception}`}>
           <h3>{bug.exception}</h3>
         </Link>
-        {bug.tags.map((tag) => (
-          <Tag key={`${bug.exception}-${tag}-${Date.now()}`} name={tag} />
-        ))}
-        <DatePosted date={bug.created_at} />
+        {bug.tags !== undefined
+          ? bug.tags.map((tag) => (
+              <Tag
+                key={`${bug.exception}-${tag}-${Date.now()}`}
+                name={tag.name}
+              />
+            ))
+          : ""}
+        <DatePosted date={bug.published_at} />
       </div>
     </div>
   );
@@ -45,8 +46,16 @@ export const BugsList = ({ bugs, mode }) => {
   return bugs.map((bug) => <Bug key={bug.exception} bug={bug} mode={mode} />);
 };
 
-
-const Bugs = ({ bugs, tags, pages, setPage, fetching, state, allRecords, mode }) => {
+const Bugs = ({
+  bugs,
+  tags,
+  pages,
+  setPage,
+  fetching,
+  state,
+  allRecords,
+  mode,
+}) => {
   return (
     <div className="row mt-2">
       <div className="col-md-2 offset-md-1">
@@ -70,6 +79,5 @@ const Bugs = ({ bugs, tags, pages, setPage, fetching, state, allRecords, mode })
     </div>
   );
 };
-
 
 export default Bugs;

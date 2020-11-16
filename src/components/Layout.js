@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import { ACCEPT_COOKIES } from "../cookies";
 import { checkCookie } from "../cookieLogic";
 
-const Layout = ({ children, mode, setMode }) => {
+const Layout = ({ children, mode, setMode , tags}) => {
   // useRef to add / remove classes to layout
   const rootLayout = useRef(null);
   // update modes by toggling dark and light classes
@@ -27,7 +27,7 @@ const Layout = ({ children, mode, setMode }) => {
       ) : (
         <Cookie name={ACCEPT_COOKIES} value={true} expiryDays="365" path="/" />
       )}
-      <Footer />
+      <Footer tags={tags}  />
     </div>
   );
 };
