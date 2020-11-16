@@ -27,6 +27,8 @@ import { checkCookie, getCookie } from "./cookieLogic";
 function App() {
   // autoloading all font awesome brand icons
   library.add(fab);
+   // api url
+   const apiURL = process.env.REACT_APP_PRODUCTION_API;
   // bugs and tags
   const [bugs, setBugs] = useState([]);
   const [tags, setTags] = useState([]);
@@ -48,7 +50,7 @@ function App() {
       setIsLoading(true);
       try {
         // fetch bugs
-        const bugsRes = await fetch("http://localhost:1337/bugs", {});
+        const bugsRes = await fetch(`${apiURL}/bugs`, {});
         const bugsJson = await bugsRes.json();
 
         setState({
@@ -67,7 +69,7 @@ function App() {
         });
         setBugs(bugsJson);
         // fetch tags
-        const tagsRes = await fetch("http://localhost:1337/tags", {});
+        const tagsRes = await fetch(`${apiURL}/tags`, {});
         const tagsJson = await tagsRes.json();
         setTags(tagsJson);
         // toggle isLoading to false

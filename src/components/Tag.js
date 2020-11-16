@@ -11,6 +11,8 @@ import Pagination from "./Pagination";
 
 const Tag = ({ mode }) => {
   const darkTag = useRef(null);
+  // api url
+  const apiURL = process.env.REACT_APP_PRODUCTION_API;
 
   const [isLoading, setIsLoading] = useState(false);
   // bugs and tags
@@ -47,7 +49,7 @@ const Tag = ({ mode }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const tagsRes = await fetch("http://localhost:1337/tags", {});
+        const tagsRes = await fetch(`${apiURL}/tags`, {});
         const tagsJson = await tagsRes.json();
         const currentTag = tagsJson.find((tagg) => tagg.name === tagName);
         setTag(currentTag);
