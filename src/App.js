@@ -50,7 +50,7 @@ function App() {
       setIsLoading(true);
       try {
         // fetch bugs
-        const bugsRes = await fetch(`${apiURL}/bugs`, {});
+        const bugsRes = await fetch(`https://bugfix-api.herokuapp.com/bugs`, {});
         const bugsJson = await bugsRes.json();
 
         setState({
@@ -69,7 +69,7 @@ function App() {
         });
         setBugs(bugsJson);
         // fetch tags
-        const tagsRes = await fetch(`${apiURL}/tags`, {});
+        const tagsRes = await fetch(`https://bugfix-api.herokuapp.com/tags`, {});
         const tagsJson = await tagsRes.json();
         setTags(tagsJson);
         // toggle isLoading to false
