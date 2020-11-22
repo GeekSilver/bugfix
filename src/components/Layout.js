@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect,useContext, useRef } from "react";
 import Navbar from "./Navbar";
 import Cookie from "./Cookie";
 import Footer from "./Footer";
@@ -6,7 +6,14 @@ import Footer from "./Footer";
 import { ACCEPT_COOKIES } from "../cookies";
 import { checkCookie } from "../cookieLogic";
 
-const Layout = ({ children, mode, setMode , tags}) => {
+// theme context
+import ThemeContext from "../context";
+import { faSteam } from "@fortawesome/free-brands-svg-icons";
+
+const Layout = ({ children, tags }) => {
+  const themeContext = useContext(ThemeContext);
+  const mode = themeContext.mode;
+  const setMode = themeContext.setMode;
   // useRef to add / remove classes to layout
   const rootLayout = useRef(null);
   // update modes by toggling dark and light classes
@@ -17,7 +24,6 @@ const Layout = ({ children, mode, setMode , tags}) => {
 
   return (
     <div className="container-fluid " ref={rootLayout}>
-      {/* check if there exists a preferred mode cookie */}
       <Navbar mode={mode} setMode={setMode} />
       {/* pass mode prop to child component */}
       {React.cloneElement(children, { mode })}
@@ -27,7 +33,7 @@ const Layout = ({ children, mode, setMode , tags}) => {
       ) : (
         <Cookie name={ACCEPT_COOKIES} value={true} expiryDays="365" path="/" />
       )}
-      <Footer tags={tags}  />
+      <Footer tags={tags} />
     </div>
   );
 };

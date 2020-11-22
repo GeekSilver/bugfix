@@ -1,7 +1,8 @@
 import React, { useReducer, useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-// styles
+// contexts
+import ThemeContext from "./context";
 
 // font awesome library set up
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -27,8 +28,8 @@ import { checkCookie, getCookie } from "./cookieLogic";
 function App() {
   // autoloading all font awesome brand icons
   library.add(fab);
-   // api url
-   const apiURL = process.env.REACT_APP_PRODUCTION_API;
+  // api url
+  const apiURL = process.env.REACT_APP_PRODUCTION_API;
   // bugs and tags
   const [bugs, setBugs] = useState([]);
   const [tags, setTags] = useState([]);
@@ -50,7 +51,10 @@ function App() {
       setIsLoading(true);
       try {
         // fetch bugs
-        const bugsRes = await fetch(`https://bugfix-api.herokuapp.com/bugs`, {});
+        const bugsRes = await fetch(
+          `${apiURL}/bugs`,
+          {}
+        );
         const bugsJson = await bugsRes.json();
 
         setState({
@@ -69,7 +73,10 @@ function App() {
         });
         setBugs(bugsJson);
         // fetch tags
-        const tagsRes = await fetch(`https://bugfix-api.herokuapp.com/tags`, {});
+        const tagsRes = await fetch(
+          `${apiURL}/tags`,
+          {}
+        );
         const tagsJson = await tagsRes.json();
         setTags(tagsJson);
         // toggle isLoading to false
@@ -88,62 +95,67 @@ function App() {
   modeValue = checkCookie(LIGHT_MODE) ? getCookie(LIGHT_MODE) === "true" : true;
   const [mode, setMode] = useState(modeValue);
 
+  // theme contextValue
+  const themeContextValue = { mode, setMode: (modeVal) =>  ( setMode(modeVal) )  };
+
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/">
-          <Layout tags={tags} mode={mode} setMode={setMode}>
-            <Landing />
-          </Layout>
-        </Route>
-        <Route path="/about">
-          <Layout tags={tags} mode={mode} setMode={setMode}>
-            <About />
-          </Layout>
-        </Route>
-        <Route path="/bugs/:bugException">
-          <Layout tags={tags} mode={mode} setMode={setMode}>
-            <Bug bugs={state.bugs} />
-          </Layout>
-        </Route>
-        <Route path="/bugs">
-          <Layout tags={tags} mode={mode} setMode={setMode}>
-            {isLoading ? (
-              <div className="alert">Fetchinglo bugs</div>
-            ) : (
-              <Bugs
-                bugs={state.bugs}
-                tags={tags}
-                pages={{
-                  currPage: state.currPage,
-                  nextPage: state.nextPage,
-                  prevPage: state.prevPage,
-                }}
-                setPage={setState}
-                fetching={state.fetching}
-                allRecords={bugs}
-                state={state}
-              />
-            )}
-          </Layout>
-        </Route>
-        <Route path="/tags/:tagName">
-          <Layout tags={tags} mode={mode} setMode={setMode}>
-             <Tag tags={tags} />
-          </Layout>
-        </Route>
-        <Route path="/tags">
-          <Layout tags={tags} mode={mode} setMode={setMode}>
-            {isLoading ? <div> Loading tags ... </div> : <Tags tags={tags} />}
-          </Layout>
-        </Route>
-        <Route path="/contact">
-          <Layout tags={tags} mode={mode} setMode={setMode}>
-            <Contact />
-          </Layout>
-        </Route>
-      </Switch>
-    </Router>
+    <ThemeContext.Provider value={themeContextValue}>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Layout tags={tags} >
+              <Landing />
+            </Layout>
+          </Route>
+          <Route path="/about">
+            <Layout tags={tags} >
+              <About />
+            </Layout>
+          </Route>
+          <Route path="/bugs/:bugException">
+            <Layout tags={tags} >
+              <Bug bugs={state.bugs} />
+            </Layout>
+          </Route>
+          <Route path="/bugs">
+            <Layout tags={tags} >
+              {isLoading ? (
+                <div className="alert">Fetchinglo bugs</div>
+              ) : (
+                <Bugs
+                  bugs={state.bugs}
+                  tags={tags}
+                  pages={{
+                    currPage: state.currPage,
+                    nextPage: state.nextPage,
+                    prevPage: state.prevPage,
+                  }}
+                  setPage={setState}
+                  fetching={state.fetching}
+                  allRecords={bugs}
+                  state={state}
+                />
+              )}
+            </Layout>
+          </Route>
+          <Route path="/tags/:tagName">
+            <Layout tags={tags} >
+              <Tag tags={tags} />
+            </Layout>
+          </Route>
+          <Route path="/tags">
+            <Layout tags={tags} >
+              {isLoading ? <div> Loading tags ... </div> : <Tags tags={tags} />}
+            </Layout>
+          </Route>
+          <Route path="/contact">
+            <Layout tags={tags} >
+              <Contact />
+            </Layout>
+          </Route>
+        </Switch>
+      </Router>
+    </ThemeContext.Provider>
   );
 }
 

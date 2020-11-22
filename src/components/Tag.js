@@ -49,7 +49,7 @@ const Tag = ({ mode }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const tagsRes = await fetch(`https://bugfix-api.herokuapp.com/tags`, {});
+        const tagsRes = await fetch(`${apiURL}/tags`, {});
         const tagsJson = await tagsRes.json();
         const currentTag = tagsJson.find((tagg) => tagg.name === tagName);
         setTag(currentTag);
