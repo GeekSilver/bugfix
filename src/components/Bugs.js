@@ -42,6 +42,29 @@ const Bug = ({ bug, mode }) => {
   );
 };
 
+// component to be displayed when there are bugs returned
+const NoBugs = ({ mode }) => {
+  const noBugsDarkMode = useRef(null);
+
+  useEffect(() => {
+    mode
+      ? noBugsDarkMode.current.classList.remove("darker-mode")
+      : noBugsDarkMode.current.classList.add("darker-mode");
+  });
+
+  return (
+    <div
+      ref={noBugsDarkMode}
+      className="text-center card border-0 d-flex justify-content-center align-items-center"
+      style={{ height: "40vh" }}
+    >
+      <div>
+        <h5 style={{ fontFamily: "poppins" }}>OOPS! NO BUGS FOUND.</h5>
+      </div>
+    </div>
+  );
+};
+
 export const BugsList = ({ bugs, mode }) => {
   return bugs.map((bug) => <Bug key={bug.exception} bug={bug} mode={mode} />);
 };
@@ -59,22 +82,32 @@ const Bugs = ({
   return (
     <div className="row mt-2">
       <div className="col-md-2 offset-md-1">
-        <Sidebar tags={tags} mode={mode} />
+        {tags.length > 0 ? (
+          <Sidebar tags={tags} mode={mode} />
+        ) : (
+          <div className="d-none d-md-block">{/* empty div */}</div>
+        )}
       </div>
 
       <div className="col-md-8">
-        <BugsList bugs={bugs} mode={mode} />
+        {bugs.length > 0 ? (
+          <>
+            <BugsList bugs={bugs} mode={mode} />
 
-        <Pagination
-          currPage={pages.currPage}
-          prevPage={pages.prevPage}
-          nextPage={pages.nextPage}
-          setPage={setPage}
-          fetching={fetching}
-          state={state}
-          mode={mode}
-          allRecords={allRecords}
-        />
+            <Pagination
+              currPage={pages.currPage}
+              prevPage={pages.prevPage}
+              nextPage={pages.nextPage}
+              setPage={setPage}
+              fetching={fetching}
+              state={state}
+              mode={mode}
+              allRecords={allRecords}
+            />
+          </>
+        ) : (
+          <NoBugs mode={mode} />
+        )}
       </div>
     </div>
   );

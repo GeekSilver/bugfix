@@ -15,6 +15,7 @@ import Bug from "./components/Bug";
 import Bugs from "./components/Bugs";
 import Tags from "./components/Tags";
 import Contact from "./components/Contact";
+import TagsSkeleton from "./components/TagsSkeleton";
 // containers
 // import tags from "./container/tags";
 // import bugs from "./container/bugs";
@@ -51,10 +52,7 @@ function App() {
       setIsLoading(true);
       try {
         // fetch bugs
-        const bugsRes = await fetch(
-          `${apiURL}/bugs`,
-          {}
-        );
+        const bugsRes = await fetch(`${apiURL}/bugs`, {});
         const bugsJson = await bugsRes.json();
 
         setState({
@@ -73,10 +71,7 @@ function App() {
         });
         setBugs(bugsJson);
         // fetch tags
-        const tagsRes = await fetch(
-          `${apiURL}/tags`,
-          {}
-        );
+        const tagsRes = await fetch(`${apiURL}/tags`, {});
         const tagsJson = await tagsRes.json();
         setTags(tagsJson);
         // toggle isLoading to false
@@ -96,29 +91,29 @@ function App() {
   const [mode, setMode] = useState(modeValue);
 
   // theme contextValue
-  const themeContextValue = { mode, setMode: (modeVal) =>  ( setMode(modeVal) )  };
+  const themeContextValue = { mode, setMode: (modeVal) => setMode(modeVal) };
 
   return (
     <ThemeContext.Provider value={themeContextValue}>
       <Router>
         <Switch>
           <Route exact path="/">
-            <Layout tags={tags} >
+            <Layout tags={tags}>
               <Landing />
             </Layout>
           </Route>
           <Route path="/about">
-            <Layout tags={tags} >
+            <Layout tags={tags}>
               <About />
             </Layout>
           </Route>
           <Route path="/bugs/:bugException">
-            <Layout tags={tags} >
+            <Layout tags={tags}>
               <Bug bugs={state.bugs} />
             </Layout>
           </Route>
           <Route path="/bugs">
-            <Layout tags={tags} >
+            <Layout tags={tags}>
               {isLoading ? (
                 <div className="alert">Fetchinglo bugs</div>
               ) : (
@@ -139,17 +134,17 @@ function App() {
             </Layout>
           </Route>
           <Route path="/tags/:tagName">
-            <Layout tags={tags} >
+            <Layout tags={tags}>
               <Tag tags={tags} />
             </Layout>
           </Route>
           <Route path="/tags">
-            <Layout tags={tags} >
-              {isLoading ? <div> Loading tags ... </div> : <Tags tags={tags} />}
+            <Layout tags={tags}>
+              {isLoading ? <div> <TagsSkeleton displaySkeletonProp={isLoading} mode={mode} />  </div> : <Tags tags={tags} /> }
             </Layout>
           </Route>
           <Route path="/contact">
-            <Layout tags={tags} >
+            <Layout tags={tags}>
               <Contact />
             </Layout>
           </Route>
