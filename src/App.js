@@ -16,6 +16,9 @@ import Bugs from "./components/Bugs";
 import Tags from "./components/Tags";
 import Contact from "./components/Contact";
 import TagsSkeleton from "./components/TagsSkeleton";
+import BugsSkeleton from "./components/BugsSkeleton";
+import SpecificTagBugsSkeleton from "./components/SpecificTagBugsSkeleton";
+import BugSkeleton from "./components/BugSkeleton";
 // containers
 // import tags from "./container/tags";
 // import bugs from "./container/bugs";
@@ -109,38 +112,40 @@ function App() {
           </Route>
           <Route path="/bugs/:bugException">
             <Layout tags={tags}>
-              <Bug bugs={state.bugs} />
+              {isLoading ? <BugSkeleton displaySkeletonProp={isLoading}
+              mode={mode}/>:  <Bug bugs={state.bugs} />}
             </Layout>
           </Route>
           <Route path="/bugs">
             <Layout tags={tags}>
               {isLoading ? (
-                <div className="alert">Fetchinglo bugs</div>
+                <BugsSkeleton displaySkeletonProp={isLoading} mode={mode} />
               ) : (
                 <Bugs
-                  bugs={state.bugs}
-                  tags={tags}
-                  pages={{
-                    currPage: state.currPage,
-                    nextPage: state.nextPage,
-                    prevPage: state.prevPage,
-                  }}
-                  setPage={setState}
-                  fetching={state.fetching}
-                  allRecords={bugs}
-                  state={state}
-                />
+                bugs={state.bugs}
+                tags={tags}
+                pages={{
+                  currPage: state.currPage,
+                  nextPage: state.nextPage,
+                  prevPage: state.prevPage,
+                }}
+                setPage={setState}
+                fetching={state.fetching}
+                allRecords={bugs}
+                state={state}
+              />
               )}
             </Layout>
           </Route>
           <Route path="/tags/:tagName">
             <Layout tags={tags}>
-              <Tag tags={tags} />
+              {isLoading ? <SpecificTagBugsSkeleton
+             displaySkeletonProp={isLoading} mode={mode} /> : <Tag tags={tags} />}
             </Layout>
           </Route>
           <Route path="/tags">
             <Layout tags={tags}>
-              {isLoading ? <div> <TagsSkeleton displaySkeletonProp={isLoading} mode={mode} />  </div> : <Tags tags={tags} /> }
+              {isLoading ? <div> <TagsSkeleton displaySkeletonProp={isLoading} mode={mode} />  </div> : <Tags tags={tags} />   }
             </Layout>
           </Route>
           <Route path="/contact">

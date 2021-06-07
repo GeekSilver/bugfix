@@ -99,15 +99,17 @@ const Tag = ({ mode }) => {
             />
           )}
         </div>
+
         <div className="card-body  text-center">
           <h2 className="card-title">{name}</h2>
           <p
-            className="card-text "
+            className="card-text"
             style={{ fontSize: "1.4em", color: "#959db1" }}
           >
             {description}
           </p>
         </div>
+
         <div>
           {isLoading ? (
             <div> Loading...</div>

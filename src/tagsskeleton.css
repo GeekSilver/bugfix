@@ -1,7 +1,7 @@
 :root {
   --content-light-bg-color: rgb(233, 233, 233);
   --card-light-bg-color: white;
-  --content-darker-bg-color:rgb(233, 233, 233);
+  --content-darker-bg-color: rgb(233, 233, 233);
   --card-darker-bg-color: rgba(62, 62, 62, 0.8);
 }
 
@@ -15,8 +15,8 @@
 }
 
 .card-skeleton-darker {
-    background-color: var(--card-darker-bg-color);
-  }
+  background-color: var(--card-darker-bg-color);
+}
 
 .icon {
   width: 100px;
@@ -25,50 +25,42 @@
   margin: auto;
 }
 
-.icon-light-bg {
-  background-color: var(--content-light-bg-color);
-}
 
-.icon-darker-bg {
-    background-color: var(--content-darker-bg-color);
-  }
-
-.card-title,
-.card-link {
+.date-posted-skeleton{
   height: 18px;
-  width: 50%;
+  width: 30%;
   border-radius: 10px;
 }
 
-.card-title-light-bg,
-.card-link-light-bg {
+.tag-skeleton{
+  height: 18px;
+  width: 10%;
+  border-radius: 10px;
+}
+
+.light-bg{
   background-color: var(--content-light-bg-color);
 }
 
-.card-title-darker-bg,
-.card-link-darker-bg {
+.darker-bg {
   background-color: var(--content-darker-bg-color);
+}
+
+
+.card-skeleton-title,
+.card-link {
+  height: 18px;
+  width: 50%;
+  /* border-radius: 10px; */
 }
 
 .line {
   height: 16px;
   margin: 10px auto;
-  border-radius: 10px;
+  /* border-radius: 10px; */
 }
 
-.line-light-bg {
-  background-color: var(--content-light-bg-color);
-}
-
-.line-darker-bg {
-    background-color: var(--content-darker-bg-color);
-  }
-
-/* .icon::before,
-  .card-title::before,
-  .line::before,
-  .card-link::before { */
-.card-skeleton-light::before {
+/* .card-skeleton-light::before {
   position: absolute;
   content: "";
   height: 100%;
@@ -86,28 +78,27 @@
   background-size: 450px 100%;
   animation: shimmer 3s linear infinite;
   animation-delay: 1s;
-}
+} */
 
-
-.card-skeleton-darker::before {
-    position: absolute;
-    content: "";
-    height: 100%;
-    width: 100%;
-    background-image: linear-gradient(
-      90deg,
-      rgba(62, 62, 62, 0) 0,
-      rgba(62, 62, 62, 0.2) 20%,
-      rgba(62, 62, 62,  0.4) 40%,
-      rgba(62, 62, 62,  0.6) 60%,
-      rgba(62, 62, 62,  0.8) 80%,
-      rgba(62, 62, 62,  0) 100%
-    );
-    background-repeat: no-repeat;
-    background-size: 450px 100%;
-    animation: shimmer 3s linear infinite;
-    animation-delay: 1s;
-  }
+/* .card-skeleton-darker::before {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(
+    90deg,
+    rgba(62, 62, 62, 0) 0,
+    rgba(62, 62, 62, 0.2) 20%,
+    rgba(62, 62, 62, 0.4) 40%,
+    rgba(62, 62, 62, 0.6) 60%,
+    rgba(62, 62, 62, 0.8) 80%,
+    rgba(62, 62, 62, 0) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 450px 100%;
+  animation: shimmer 3s linear infinite;
+  animation-delay: 1s;
+} */
 
 @keyframes shimmer {
   from {
